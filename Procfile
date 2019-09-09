@@ -1,0 +1,1 @@
+web: java -cp target/spring-boot-websockets-1.0-SNAPSHOT.jar pac.Application
