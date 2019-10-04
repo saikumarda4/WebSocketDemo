@@ -1,6 +1,7 @@
 package pac.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -16,15 +17,15 @@ public class WebSocketController {
     WebSocketController(SimpMessagingTemplate template){
         this.template = template;
     }
-    @GetMapping("/remote/{message}")
-    public void remote(@PathVariable String message) {
+    @GetMapping("/remote/{token}/{message}")
+    public void remote(@PathVariable String token, @PathVariable String message) {
     	System.out.println(message);
-    	onReceivedMesage(message);
+    	onReceivedMesage(token, message);
     }
 
-    @MessageMapping("/send/message")
-    public void onReceivedMesage(String message){
+    @MessageMapping("/send/message/{token}")
+    public void onReceivedMesage(@DestinationVariable String token, String message){
     	System.out.println("0987654321");
-        this.template.convertAndSend("/chat",message);
+        this.template.convertAndSend("/chat/"+ token,message);
     }
 }
